@@ -1,5 +1,5 @@
 buildscript {
-    val kotlinVersion = "1.7.10"
+    val kotlinVersion by extra("1.7.10")
     
     repositories {
         google()
@@ -8,7 +8,7 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
     }
 }
 
@@ -19,10 +19,10 @@ allprojects {
     }
 }
 
-rootProject.buildDir = file("../build")
+val buildDir by extra(file("../build"))
 
 subprojects {
-    project.buildDir = file("${rootProject.buildDir}/${project.name}")
+    project.buildDir = file("${rootProject.extra["buildDir"]}/${project.name}")
 }
 
 subprojects {
@@ -30,5 +30,5 @@ subprojects {
 }
 
 tasks.register<Delete>("clean") {
-    delete(rootProject.buildDir)
+    delete(rootProject.extra["buildDir"])
 }
