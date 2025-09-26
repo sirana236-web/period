@@ -52,8 +52,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   
-  # مطمئن شوید که فایل‌های انیمیشن و تصاویر را اضافه کنید
-  assets:
-    - assets/animations/
-    - assets/images/
-    - assets/icons/
+  # حذف شده تا خطا برطرف شود
+  # assets:
+  #   - assets/animations/
+  #   - assets/images/
+  #   - assets/icons/
