@@ -151,7 +151,7 @@ class AppThemes {
         ),
       ),
     ),
-    cardTheme: CardThemeData(  // تغییر از CardTheme به CardThemeData
+    cardTheme: CardThemeData(  // اصلاح شده از CardTheme به CardThemeData
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -215,7 +215,7 @@ class AppThemes {
         ),
       ),
     ),
-    cardTheme: CardThemeData(  // تغییر از CardTheme به CardThemeData
+    cardTheme: CardThemeData(  // اصلاح شده از CardTheme به CardThemeData
       elevation: 4,
       color: AppColors.darkSurface,
       shape: RoundedRectangleBorder(
@@ -1296,7 +1296,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     children: [
-                      // استفاده مستقیم از SmoothPageIndicator
+                      // اصلاح شده: استفاده از SmoothPageIndicator به جای AnimatedSmoothIndicator
                       SmoothPageIndicator(
                         controller: _pageController,
                         count: _pages.length,
@@ -4466,108 +4466,9 @@ class SymptomChart extends StatelessWidget {
 // ============================================
 // ANIMATED SMOOTH INDICATOR WIDGET
 // ============================================
-
-class AnimatedSmoothIndicator extends StatelessWidget {
-  final int activeIndex;
-  final int count;
-  final dynamic effect;
-
-  const AnimatedSmoothIndicator({
-    super.key,
-    required this.activeIndex,
-    required this.count,
-    required this.effect,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SmoothPageIndicator(
-      controller: PageController(initialPage: activeIndex),
-      count: count,
-      effect: effect,
-    );
-  }
-}
-
 // ============================================
 // EXPANDING DOTS EFFECT
-// ============================================
-
-class ExpandingDotsEffect extends IndicatorEffect {
-  final Color activeDotColor;
-  final Color dotColor;
-  final double dotHeight;
-  final double dotWidth;
-  final double expansionFactor;
-  final double spacing;
-
-  const ExpandingDotsEffect({
-    required this.activeDotColor,
-    required this.dotColor,
-    required this.dotHeight,
-    required this.dotWidth,
-    required this.expansionFactor,
-    required this.spacing,
-  });
-
-  @override
-  Size calculateSize(int count) {
-    return Size(
-      (dotWidth * count) + (spacing * (count - 1)),
-      dotHeight,
-    );
-  }
-
-  @override
-  IndicatorPainter buildPainter(int count, double offset) {
-    return _ExpandingDotsPainter(
-      count: count,
-      offset: offset,
-      effect: this,
-    );
-  }
-}
-
-class _ExpandingDotsPainter extends IndicatorPainter {
-  final ExpandingDotsEffect effect;
-
-  _ExpandingDotsPainter({
-    required int count,
-    required double offset,
-    required this.effect,
-  }) : super(count, offset);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final current = offset.floor();
-    final dotOffset = offset - current;
-    
-    for (int i = 0; i < count; i++) {
-      final active = i == current || (i == current + 1 && dotOffset > 0);
-      final color = active ? effect.activeDotColor : effect.dotColor;
-      
-      final xPos = (i * (effect.dotWidth + effect.spacing)) + (effect.dotWidth / 2);
-      final yPos = size.height / 2;
-      
-      double scale = 1.0;
-      if (i == current) {
-        scale = 1.0 + (effect.expansionFactor - 1.0) * (1.0 - dotOffset);
-      } else if (i == current + 1 && dotOffset > 0) {
-        scale = 1.0 + (effect.expansionFactor - 1.0) * dotOffset;
-      }
-      
-      final paint = Paint()
-        ..color = color
-        ..style = PaintingStyle.fill;
-      
-      canvas.drawCircle(
-        Offset(xPos, yPos),
-        (effect.dotWidth / 2) * scale,
-        paint,
-      );
-    }
-  }
-}
+// ==========================================
 
 // ============================================
 // USECASES
@@ -4621,4 +4522,5 @@ abstract class UserRepository {
 // ============================================
 // END OF COMPLETE CODE
 // ============================================
+
 
