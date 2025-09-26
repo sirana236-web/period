@@ -151,7 +151,7 @@ class AppThemes {
         ),
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(  // تغییر از CardTheme به CardThemeData
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -215,7 +215,7 @@ class AppThemes {
         ),
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(  // تغییر از CardTheme به CardThemeData
       elevation: 4,
       color: AppColors.darkSurface,
       shape: RoundedRectangleBorder(
@@ -1296,8 +1296,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     children: [
-                      AnimatedSmoothIndicator(
-                        activeIndex: _currentPage,
+                      // استفاده مستقیم از SmoothPageIndicator
+                      SmoothPageIndicator(
+                        controller: _pageController,
                         count: _pages.length,
                         effect: ExpandingDotsEffect(
                           activeDotColor: isDarkMode
@@ -4620,3 +4621,4 @@ abstract class UserRepository {
 // ============================================
 // END OF COMPLETE CODE
 // ============================================
+
