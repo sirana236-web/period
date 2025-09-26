@@ -2883,10 +2883,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen>
                             Expanded(
                               child: TextField(
                                 controller: _messageController,
-                                textDirection: TextDirection.rtl,
+                                // حذف شده: textDirection: TextDirection.rtl,
                                 decoration: const InputDecoration(
                                   hintText: 'سوالت رو بپرس...',
-                                  hintTextDirection: TextDirection.rtl,
+                                  // حذف شده: hintTextDirection: TextDirection.rtl,
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.symmetric(
                                     horizontal: 20,
@@ -3031,6 +3031,75 @@ class _MessageBubbleState extends State<MessageBubble>
             margin: const EdgeInsets.symmetric(vertical: 8),
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.75,
+       class MessageBubble extends StatefulWidget {
+  final ChatMessage message;
+  final bool isDarkMode;
+  final VoidCallback onSpeak;
+
+  const MessageBubble({
+    super.key,
+    required this.message,
+    required this.isDarkMode,
+    required this.onSpeak,
+  });
+
+  @override
+  State<MessageBubble> createState() => _MessageBubbleState();
+}
+
+class _MessageBubbleState extends State<MessageBubble>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    ));
+    
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(widget.message.isUser ? 0.3 : -0.3, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+    
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: Align(
+          alignment: widget.message.isUser
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.75,
             ),
             child: Column(
               crossAxisAlignment: widget.message.isUser
@@ -3084,7 +3153,7 @@ class _MessageBubbleState extends State<MessageBubble>
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.right,
-                    textDirection: TextDirection.rtl,
+                    // حذف شده: textDirection: TextDirection.rtl,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -4522,5 +4591,6 @@ abstract class UserRepository {
 // ============================================
 // END OF COMPLETE CODE
 // ============================================
+
 
 
