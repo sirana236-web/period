@@ -3,6 +3,19 @@ plugins {
     id("kotlin-android")
 }
 
+val localProperties = java.util.Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { 
+        localProperties.load(it) 
+    }
+}
+
+val flutterRoot = localProperties.getProperty("flutter.sdk")
+    ?: throw GradleException("Flutter SDK not found.")
+
+apply(from = "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle")
+
 android {
     namespace = "com.example.period_tracker"
     compileSdk = 33
@@ -13,6 +26,7 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
     }
 
     compileOptions {
@@ -23,14 +37,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-}
 
-val flutterRoot = localProperties.getProperty("flutter.sdk")
-if (flutterRoot == null) {
-    throw GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+        }
+    }
 }
-
-apply(from = "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle")
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.10")
